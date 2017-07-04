@@ -15,17 +15,20 @@ function requestOptions(path) {
 
 function getRepoContributors(repoOwner, repoName, cb) {
   const path = '/repos/'+repoOwner+'/'+repoName+'/contributors';
-  request(requestOptions(path), function (error, response, body) {
-    if (repoOwner && repoName) {
+
+  request(requestOptions(path), (error, response, body) => {
+    try {
       const data = JSON.parse(body);
       cb(data);
-    } else {
+    } catch (err) {
+      // Throw error message
       console.log("Error - Please enter two valid arguments: repoOwner and repoName");
       return;
     }
   });
 }
 
+// Download each avatar URL into a file named after contributor 'login'
 function downloadImageByURL(url, filePath) {
   request.get(url).pipe(fs.createWriteStream(filePath));
 }
