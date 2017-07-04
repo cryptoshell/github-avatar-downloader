@@ -16,11 +16,12 @@ function requestOptions(path) {
 function getRepoContributors(repoOwner, repoName, cb) {
   const path = '/repos/'+repoOwner+'/'+repoName+'/contributors';
   request(requestOptions(path), function (error, response, body) {
-    try {
+    if (repoOwner && repoName) {
       const data = JSON.parse(body);
       cb(data);
-    } catch (err) {
-      console.log('Failed to parse body content');
+    } else {
+      console.log("Error - Please enter two valid arguments: repoOwner and repoName");
+      return;
     }
   });
 }
