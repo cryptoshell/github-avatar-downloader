@@ -29,6 +29,7 @@ function downloadImageByURL(url, filePath) {
   request.get(url).pipe(fs.createWriteStream(filePath));
 }
 
+// Command line arguments
 var repoOwner = process.argv[2];
 var repoName = process.argv[3];
 
