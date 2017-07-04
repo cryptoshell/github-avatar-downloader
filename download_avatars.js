@@ -1,4 +1,5 @@
 const request = require('request');
+const fs = require('fs');
 
 function requestOptions(path) {
   return {
@@ -24,12 +25,15 @@ function getRepoContributors(repoOwner, repoName, cb) {
   });
 }
 
+function downloadImageByURL(url, filePath) {
+  request.get(url).pipe(fs.createWriteStream(filePath));
+}
 
 var repoOwner = process.argv[2];
 var repoName = process.argv[3];
 
 getRepoContributors(repoOwner, repoName, (data) => {
   data.forEach((contributor) => {
-    console.log(contributor.avatar_url);
+    downloadImageByURL(contributor.avatar_url, "avatars/"+contributor.login+".jpg");
   })
 });
